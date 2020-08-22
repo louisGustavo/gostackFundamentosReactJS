@@ -23,19 +23,42 @@ const Import: React.FC = () => {
   const history = useHistory();
 
   async function handleUpload(): Promise<void> {
-    // const data = new FormData();
+    //O método formData vai converter os dados para form
+    const data = new FormData();
 
-    // TODO
+    //Recupera somente o primeiro arquivo do upload
+    const file = uploadedFiles[0];
+
+    //Faz a inclusão dos dados desse arquivo no formData
+    //Parâmetros:
+    //Campo 'file', arquivo 'file.file' e nome do arquivo 'file.name'
+    data.append('file', file.file, file.name);
 
     try {
-      // await api.post('/transactions/import', data);
+      //faz o upload do arquivo via API
+      await api.post('/transactions/import', data);
+
+      //retorna para a rota raiz
+      history.push('/');
     } catch (err) {
-      // console.log(err.response.error);
+      console.log(err.response.error);
     }
   }
 
   function submitFile(files: File[]): void {
-    // TODO
+
+    //Recuperar os dados dos arquivos que serão importados
+    //e nomeá-los conforme a interface "FileProps" deve receber
+    const uploadFiles = files.map(file => ({
+      file,
+      name: file.name,
+      readableSize: filesize(file.size), //função torna o valor total legível
+    }));
+
+    console.log(uploadFiles);
+
+    //Ssetar para a uploadedFiles
+    setUploadedFiles(uploadFiles);
   }
 
   return (
