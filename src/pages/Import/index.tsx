@@ -26,6 +26,9 @@ const Import: React.FC = () => {
     //O método formData vai converter os dados para form
     const data = new FormData();
 
+    //evita fazer upload caso não exista arquivos para importar
+    if(!uploadedFiles) return;
+
     //Recupera somente o primeiro arquivo do upload
     const file = uploadedFiles[0];
 
